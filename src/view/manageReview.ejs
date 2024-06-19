@@ -1,0 +1,227 @@
+
+<div class="background-radial-gradient overflow-hidden" style="height: 100vh">
+  <div
+    class="d-flex flex-column mb-3 justify-content-center align-items-center"
+  >
+    <div class="p-2 mt-4" style="width: 100%; max-width: 600px">
+      <form
+        action="/review/searchForPermormance"
+        method="post"
+        class="d-flex"
+        role="search"
+      >
+        <input
+          class="form-control me-2"
+          type="search"
+          name="emailId"
+          placeholder="Search"
+          aria-label="Search"
+          required
+        />
+        <button class="btn btn-outline-success" type="submit">Search</button>
+      </form>
+    </div>
+
+    <div class="p-2" style="width: 100%; max-width: 1000px">
+      <% if (userDetails ) { %> <% const elements = [].concat(userDetails); %>
+      <% for (const user of elements) { %>
+      <!-- Your code for each user here -->
+
+      <div class="d-flex">
+        <div class="p-2 flex-grow-1 mx-auto" style="max-width: 600px">
+          <div class="card">
+            <div class="card-header">
+              <span> <%=user.firstName%> <%=user.lastName%></span>
+            </div>
+            <div class="card-body">
+              <h5 class="card-title">Employee Details</h5>
+              <p class="card-text">
+                <i class="fa-solid fa-envelope"></i> EmailId: <%=user.emailId%>
+              </p>
+              <p class="card-text">
+                <i class="fa-solid fa-phone"></i> Phone Number:
+                <%=user.phoneNo%>
+              </p>
+
+              <div class="d-flex justify-content-around">
+                <button
+                  type="button"
+                  class="btn btn-primary"
+                  data-bs-toggle="modal"
+                  data-bs-target="#assignRecipent"
+                >
+                  Assign Recipient
+                </button>
+
+                <a
+                  href="/review/viewRecipient/<%= user._id %>"
+                  class="btn btn-outline-info"
+                  >viewRecipient</a
+                >
+
+                <a
+                  href="/feedbackreceived/<%= user._id %>"
+                  class="btn btn-outline-info"
+                  >Feedback Received</a
+                >
+              </div>
+
+              <!--Assign Recipient  Modal -->
+              <div
+                class="modal fade"
+                id="assignRecipent"
+                tabindex="-1"
+                aria-labelledby="exampleModalLabel"
+                aria-hidden="true"
+              >
+                <div class="modal-dialog">
+                  <div class="modal-content">
+                    <div class="modal-header">
+                      <h1 class="modal-title fs-5" id="exampleModalLabel">
+                        Reviewer:<%=user.firstName%> <%=user.lastName%>
+                      </h1>
+                      <button
+                        type="button"
+                        class="btn-close"
+                        data-bs-dismiss="modal"
+                        aria-label="Close"
+                      ></button>
+                    </div>
+
+                    <form
+                      method="post"
+                      action="/review/addRecipient/<%=user._id%>"
+                    >
+                      <div class="modal-body">
+                        <div class="mb-3">
+                          <label for="Recipient" class="form-label"
+                            >Recipient EmailId</label
+                          >
+                          <input
+                            name="recipientMailId"
+                            type="text"
+                            class="form-control"
+                            id="Recipient"
+                          />
+                        </div>
+                      </div>
+                      <div class="modal-footer">
+                        <button
+                          type="button"
+                          class="btn btn-secondary"
+                          data-bs-dismiss="modal"
+                        >
+                          Close
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                          Assign Recipient
+                        </button>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- view/update viewRecipient -->
+
+        <% if (recipientDetails) { %> <% const
+        feedbackElements=[].concat(recipientDetails); %>
+        <div class="p-2" style="width: 100%; max-width: 400px">
+          <div class="accordion accordion-flush" id="accordionFlushExample">
+            <% for (const recipient of feedbackElements){ %>
+
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button
+                  class="accordion-button collapsed"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#flush-collapseThree-<%=recipient.recepientId%>"
+                  aria-expanded="false"
+                  aria-controls="flush-collapseThree-<%=recipient.recepientId%>"
+                >
+                  <%= recipient.recepientfirstName %> <%=
+                  recipient.recepientlastName %>
+                </button>
+              </h2>
+              <div
+                id="flush-collapseThree-<%=recipient.recepientId%>"
+                class="accordion-collapse collapse"
+                data-bs-parent="#accordionFlushExample"
+              >
+                <div class="accordion-body">
+                  <i class="fa-solid fa-envelope"></i>
+                  <%=recipient.recipientEmailId%>
+                  <br />
+
+                  <div>
+                    <a
+                      href="/review/removeRecepient/<%= recipient.recepientId %>/<%=user._id%>"
+                      class="btn btn-outline-danger"
+                      >Remove Recipient</a
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <% } %>
+          </div>
+        </div>
+        <% } %>
+
+        <!-- view feedback -->
+        <% if (feedBackDetails) { %> <% const
+        feedbackElements=[].concat(feedBackDetails); %>
+        <div class="p-2" style="width: 100%; max-width: 400px">
+          <div class="accordion accordion-flush" id="accordionFlushExample">
+            <% for (const recipient of feedbackElements){ %>
+
+            <div class="accordion-item">
+              <h2 class="accordion-header">
+                <button
+                  class="accordion-button collapsed"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#flush-collapseThree-<%=recipient._id%>"
+                  aria-expanded="false"
+                  aria-controls="flush-collapseThree-<%=recipient._id%>"
+                >
+                <%=recipient.reviewerEmailId%>
+                  
+                </button>
+              </h2>
+              <div
+                id="flush-collapseThree-<%=recipient._id%>"
+                class="accordion-collapse collapse"
+                data-bs-parent="#accordionFlushExample"
+              >
+                <div class="accordion-body">
+                  <div>
+                    <span class="fw-medium"><i class="fa-solid fa-id-badge"></i> Reviewer:   </span><%= recipient.reviewerFirstName %> <%=
+                    recipient.reviewerLastName %>
+                  </div>
+                  <br>
+                  <div>
+                    <span class="fw-medium"><i class="fa-solid fa-star" style="color: #FFD43B;"></i>  </span><%=recipient.rating%>
+                  </div>
+                  <br>
+                  <div>
+                    <span class="fw-medium"><i class="fa-regular fa-comment-dots"></i> Comment:   </span><%=recipient.comment%>
+                  </div>
+                </div>
+              </div>
+
+              <% } %>
+            </div>
+          </div>
+          <% } %>
+        </div>
+        <% } %> <% } %>
+      </div>
+    </div>
+  </div>
+</div>

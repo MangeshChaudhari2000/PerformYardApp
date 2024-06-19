@@ -1,0 +1,106 @@
+
+<div class="background-radial-gradient overflow-hidden" style="height: 100vh">
+  <div
+    class="d-flex flex-column mb-3 justify-content-center align-items-center"
+  >
+    <div class="p-2 mt-4" style="width: 100%; max-width: 1200px">
+      <h4 style="color: aliceblue">
+        Recipients assigned for Feedback
+        <i class="fa-regular fa-message fa-sm" style="color: #ffffff"></i>
+      </h4>
+      <div>
+        <% if(recipientDetails && recipientDetails.length > 0) { %>
+        <div
+          class="d-flex p-2 mx-auto justify-content-around align-content-around flex-wrap"
+        >
+          <div
+            class="accordion accordion-flush"
+            style="width: 100%; max-width: 600px"
+            id="accordionExample"
+          >
+            <% for (const user of recipientDetails) { %>
+            <div class="accordion-item mt-3">
+              <h2 class="accordion-header">
+                <button
+                  class="accordion-button"
+                  type="button"
+                  data-bs-toggle="collapse"
+                  data-bs-target="#collapseOne-<%= user.recepientId %>"
+                  aria-expanded="false"
+                  aria-controls="collapseOne-<%= user.recepientId %>"
+                >
+                  <%=user.recepientfirstName%> <%=user.recepientlastName%> 
+                </button>
+              </h2>
+              <div
+                id="collapseOne-<%= user.recepientId %>"
+                class="accordion-collapse collapse"
+                data-bs-parent="#accordionExample"
+              >
+                <div class="accordion-body">
+                  <!-- Accordion content here -->
+                  <form action="/review/addFeedback/<%=user.recepientId%>" method="post">
+                    <div class="mb-3 row">
+                      <label for="staticEmail" class="col-sm-2 col-form-label"
+                        >Email</label
+                      >
+                      <div class="col-sm-10">
+                        <input
+                          type="text"
+                          readonly
+                          class="form-control-plaintext"
+                          id="staticEmail"
+                          value="<%= user.recipientEmailId %>"
+                        />
+                      </div>
+                    </div>
+                    <div class="mb-3 row">
+                      <label for="inputComment" class="col-sm-2 col-form-label"
+                        >Comment</label
+                      >
+                      <div class="col-sm-10">
+                        <textarea
+                          class="form-control"
+                          id="inputComment"
+                          rows="3"
+                          placeholder="Enter your comment"
+                          name="comment"
+                        ></textarea>
+                      </div>
+                    </div>
+                    <div class="mb-3 row">
+                      <label for="staticEmail" class="col-sm-2 col-form-label"
+                        >Rating</label
+                      >
+                      <div class="col-sm-10">
+                        <input
+                        type="number"
+                        class="form-control"
+                        id="numberInput"
+                        name="rating"
+                        min="0"
+                        max="10"
+                        required
+                        placeholder="Please provide rating between 0 and 10"
+                      />
+                      </div>
+                      
+                      
+                    </div>
+                    <button type="submit" class="btn btn-primary">
+                      Submit
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+            <% } %>
+          </div>
+        </div>
+        <% } else { %>
+        <p style="color: azure">No new recipients have been assigned for feedback!        </p>
+        <% } %>
+      </div>
+    </div>
+  </div>
+</div>
