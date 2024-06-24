@@ -39,7 +39,7 @@ export default class UserRepository {
         } catch (error) {
             if (error instanceof mongoose.Error.ValidationError) {
                 // Duplicate email ID error
-                throw new Error("Email ID already exists");
+                throw new Error(error.message);
             } else {
                 throw new ApplicationError(error.message, 400);
             }
