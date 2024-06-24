@@ -111,8 +111,8 @@ export default class UserController {
             }
         } catch (error) {
             res.locals.flash=req.flash('error', error.message)
-            return res.redirect("back")
-
+            const user=await this.userRepository.findUserbyUserId(reviwerId);
+            return res.render("manageEmployee", { userDetails: user, flash: req.flash() })
         }
 
     }
