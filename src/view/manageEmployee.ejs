@@ -174,10 +174,12 @@
                         >Phone Number</label
                       >
                       <input
-                        type="text"
+                      name="phoneNo"
+                        type="number"
                         class="form-control"
                         id="employeePosition"
                         placeholder="<%=user.phoneNo%>"
+                        pattern="[0-9]{10}"
                       />
                     </div>
                     <div class="mb-2">
